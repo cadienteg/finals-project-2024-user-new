@@ -1,11 +1,12 @@
-package DTO;
+package com.ctu.reservationportal.infrastructure;
+
+import com.ctu.reservationportal.model.UserInfo;
 
 import java.util.Scanner;
 
 public class PreferRole {
-    public PreferRole(UserInfo userInfo) {
-    }
 
+    // Method to select preferred role and register user or admin
     public static void selectPreferRole(UserInfo userInfo) {
         Scanner scanner = new Scanner(System.in);
         int preferredRole;
@@ -13,46 +14,37 @@ public class PreferRole {
         do {
             System.out.println("Enter Preferred Role (1 = User, 2 = Admin):");
             while (!scanner.hasNextInt()) {
-                System.out.println("Invalid input. Please enter a valid integer.");
-                scanner.nextInt();
+                System.out.println("Invalid input. Please enter a valid 1 for User and 2 for Admin.");
+                scanner.next(); // Consume the invalid input
             }
             preferredRole = scanner.nextInt();
             scanner.nextLine(); // Consume the newline character
         } while (preferredRole != 1 && preferredRole != 2);
+        // Loop until valid email is entered
 
         if (preferredRole == 1) {
-            // User registration
-            System.out.println("Enter your name: ");
-            String name = scanner.nextLine();
+            // Generate user ID number
+            String idNumber = IDGenerator.generateUserID();
+            System.out.println("User ID number: " + idNumber);
+            //user set info
+            userInfo.setIDNumber(idNumber);
 
-            String newEmail;
-            do {
-                System.out.println("Enter your email: ");
-                newEmail = scanner.nextLine();
-            } while (!Validators.isValidEmail(newEmail)); // Loop until valid email is entered
-
-            System.out.println("Enter admin user ID: ");
-            String userId = scanner.nextLine();
-
-            // ...
         } else if (preferredRole == 2) {
             // Admin registration
-            String adminId;
-            do {
-                System.out.println("Enter admin user ID (six digits): ");
-                adminId = scanner.nextLine();
-            } while (!Validators.isValidAdminID(adminId)); // Loop until valid admin ID is entered
-            userInfo.setAdminID(adminId);
 
-            // ...
+            // Generate admin ID number
+            String idNumber = IDGenerator.generateAdminID();
+            System.out.println("Admin ID number: " + idNumber);
+
+            // Set admin info
+            userInfo.setIDNumber(idNumber);
+
         } else {
             System.out.println("Invalid role selected.");
         }
-    }
 
-    public static void displayPreferRole() {
-    }
-
-    public void selectPreferRole() {
+        // Exit the program
+        System.out.println("You hav succesfully registered in this portal.");
+        System.exit(0);
     }
 }
