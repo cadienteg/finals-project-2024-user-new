@@ -1,15 +1,19 @@
-package DTO;
+package com.ctu.reservationportal.infrastructure;
+
+import com.ctu.reservationportal.model.UserInfo;
+
 import java.util.Scanner;
 
 public class UserInfoEditor {
-
     private final Scanner scanner;
     private final UserInfo userInfo;
+    private final Validators validators;
     private boolean exitEditing;
 
     public UserInfoEditor(UserInfo userInfo) {
         this.userInfo = userInfo;
         this.scanner = new Scanner(System.in);
+        this.validators = new Validators();
     }
 
     public void editUserInfo() {
@@ -27,8 +31,11 @@ public class UserInfoEditor {
 
             switch (choice) {
                 case 0:
-                    System.out.println("Exiting editing.");
+                    System.out.println("Exit editing.");
                     RegistrationCode.displayRegistrationCode();
+                    CreateAccount.createAccount(scanner);
+                    UserInfo userInfo = new UserInfo();
+                    PreferRole.selectPreferRole(userInfo);
                     exitEditing = true; // Set flag to exit editing
                     break;
                 case 1:
@@ -66,94 +73,15 @@ public class UserInfoEditor {
                     editField("ZIP code", this::editZIPCode);
                     break;
                 case 12:
-                    editField("Gender", this::editgender);
+                    editField("Gender", this::editGender);
                     break;
                 case 13:
-                    editField("Nationality", this::editnationality);
+                    editField("Nationality", this::editNationality);
                     break;
                 default:
                     System.out.println("Invalid choice.");
             }
         } while (!exitEditing); // Continue editing until flag is set
-    }
-
-    private void editFirstName() {
-        System.out.print("Enter new First Name: ");
-        String firstName = scanner.nextLine();
-        userInfo.setFirstName(firstName);
-    }
-
-    private void editMiddleName() {
-        System.out.print("Enter new Middle Name: ");
-        String middleName = scanner.nextLine();
-        userInfo.setMiddleName(middleName);
-    }
-
-    private void editLastName() {
-        System.out.print("Enter new Last Name: ");
-        String lastName = scanner.nextLine();
-        userInfo.setLastName(lastName);
-    }
-
-    private void editBirthdate() {
-        System.out.print("Enter new Birthdate (YYYY-MM-DD): ");
-        String birthdate = scanner.nextLine();
-        userInfo.setBirthDate(birthdate);
-    }
-
-    private void editEmail() {
-        System.out.print("Enter new Email: ");
-        String email = scanner.nextLine();
-        userInfo.setEmail(email);
-    }
-
-    private void editPhoneNumber() {
-        System.out.print("Enter new Phone Number: ");
-        String phoneNumber = scanner.nextLine();
-        userInfo.setPhoneNumber(phoneNumber);
-    }
-
-    private void editStreet() {
-        System.out.print("Enter new Street: ");
-        String street = scanner.nextLine();
-        userInfo.setStreet(street);
-    }
-
-    private void editBarangay() {
-        System.out.print("Enter new Barangay: ");
-        String barangay = scanner.nextLine();
-        userInfo.setBarangay(barangay);
-    }
-
-    private void editCity() {
-        System.out.print("Enter new City: ");
-        String city = scanner.nextLine();
-        userInfo.setCity(city);
-    }
-
-    private void editMunicipality() {
-        System.out.print("Enter new Municipality: ");
-        String municipality = scanner.nextLine();
-        userInfo.setMunicipality(municipality);
-    }
-
-    private void editZIPCode() {
-        System.out.print("Enter new ZIP code: ");
-        int zipcode = scanner.nextInt();
-        scanner.nextLine(); // Consume newline
-        userInfo.setZIPcode(String.valueOf(zipcode));
-    }
-
-    private void editgender() {
-        System.out.print("Enter new Gender: ");
-        String gender = scanner.nextLine();
-        userInfo.setGender(gender);
-    }
-
-    private void editnationality() {
-        System.out.print("Enter new Nationality: ");
-        String nationality = scanner.nextLine();
-        userInfo.setNationality(nationality);
     }
 
     // Method to print edit options
@@ -190,12 +118,85 @@ public class UserInfoEditor {
         scanner.nextLine(); // Consume newline
         if (choice == 0) {
             System.out.println("Exit editing.");
-            RegistrationCode generatedCode = new RegistrationCode();
             RegistrationCode.displayRegistrationCode();
-            exitEditing = true;
+            CreateAccount.createAccount(scanner);
 
-            // Call CreateAccount with userInfo (if applicable)
-            CreateAccount createAccount = new CreateAccount(userInfo);
+            // Proceed to PreferRole
+            PreferRole.selectPreferRole(userInfo);
+            exitEditing = true;
         }
     }
+
+    // Methods to edit individual fields
+    private void editFirstName() {
+        userInfo.setFirstName(validateInput("First Name"));
+    }
+
+    private void editMiddleName() {
+        userInfo.setMiddleName(validateInput("Middle Name"));
+    }
+
+    private void editLastName() {
+        userInfo.setLastName(validateInput("Last Name"));
+    }
+
+    private void editBirthdate() {
+        userInfo.setBirthDate(validateInput("Birthdate"));
+    }
+
+    private void editEmail() {
+        userInfo.setEmail(validateInput("Email"));
+    }
+
+    private void editStreet() {
+        userInfo.setStreet(validateInput("Street"));
+    }
+
+    private void editBarangay() {
+        userInfo.setBarangay(validateInput("Barangay"));
+    }
+
+    private void editCity() {
+        userInfo.setCity(validateInput("City"));
+    }
+
+    private void editMunicipality() {
+        userInfo.setMunicipality(validateInput("Municipality"));
+    }
+
+    private void editZIPCode() {
+        userInfo.setZIPcode(Integer.parseInt(validateInput("ZIP code")));
+    }
+
+    private void editGender() {
+        userInfo.setGender(validateInput("Gender"));
+    }
+
+    private void editNationality() {
+        userInfo.setNationality(validateInput("Nationality"));
+    }
+
+    private void editPhoneNumber() {
+        userInfo.setPhoneNumber(validateInput("Phone Number"));
+    }
+
+    // Method to validate user input
+    private String validateInput(String fieldName) {
+        String userInput;
+        boolean isValid;
+
+        do {
+            System.out.print("Enter new " + fieldName + ": ");
+            userInput = scanner.nextLine();
+            isValid = validators.isValidInput(fieldName, userInput);
+
+            if (!isValid) {
+                System.out.println("Invalid input. Please try again.");
+            }
+        } while (!isValid);
+
+        return userInput;
+    }
+
 }
+
