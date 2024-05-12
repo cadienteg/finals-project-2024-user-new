@@ -1,4 +1,4 @@
-package DTO;
+package com.ctu.reservationportal.infrastructure;
 
 import java.util.Random;
 import java.util.Scanner;
@@ -28,39 +28,40 @@ public class RegistrationCode {
     }
 
     /**
-     * The main method generates a registration code and prints it to the console.
+     * Displays a registration code generated randomly.
+     * Prompts the user to enter a registration code and checks if it matches the generated code.
+     * Continuously loops until a valid registration code is entered.
      */
     public static void displayRegistrationCode() {
-        Scanner scanner = new Scanner(System.in);
+        Scanner scanner = new Scanner(System.in); // Initialize Scanner object for user input
 
+        // Generate a registration code
         String code = generateCode();
-        System.out.println("Registration Code :" + code);
+        System.out.println("Registration Code :" + code); // Print the generated registration code
 
-        boolean codeMatched = false;
+        boolean codeMatched = false; // Variable to track if the entered code matches the generated code
 
+        // Loop to prompt for the registration code and check if it matches the generated code
         do {
+            // Prompt the user to enter the registration code
             System.out.print("Enter Registration Code: ");
             String inputCode = scanner.nextLine();
 
+            // Check if the entered code matches the generated code
             if (inputCode.equals(code)) {
-                codeMatched = true;
+                codeMatched = true; // Set codeMatched to true if the codes match
                 System.out.println("Registration code is valid.");
+                System.out.println("User Registration Successful!");
+                System.out.println("You can now Create An Account");
+                CreateAccount.createAccount(scanner);
             } else {
-                attempts--;
-                if (attempts == 0) {
-                    System.out.println("Maximum attempts reached. User registration failed.");
-                    return; // Exit the registration process
-                }
-
+                // Inform the user that the entered code does not match and prompt for re-entry
                 System.out.println("Registration code does not match. Please try again.");
-                System.out.println("You have " + attempts + " attempts remaining.");
             }
-        } while (!codeMatched);
+        } while (!codeMatched); // Continue looping until a valid registration code is entered
 
-        System.out.println("User Registration Successful!");
-        System.out.println("You can now Create An Account");
     }
-
+    //main for the display of registration code
     public static void main(String[] args) {
         displayRegistrationCode();
     }
