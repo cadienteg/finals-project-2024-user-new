@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Create User.iml" filepath="$PROJECT_DIR$/Create User.iml" />
+      <module fileurl="file://$PROJECT_DIR$/UserManagement.iml" filepath="$PROJECT_DIR$/UserManagement.iml" />
     </modules>
   </component>
 </project>
