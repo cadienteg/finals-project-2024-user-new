@@ -6,6 +6,7 @@ package com.ctu.room.reservationportal.model;
 public class UserInfo {
    // User's  at id numbers
     private String userName;
+    private String password;
     private int idNumber;
     private String firstName; // User's first name
     private String middleName; // User's middle name
@@ -21,6 +22,14 @@ public class UserInfo {
     private String nationality; // User's nationality
     private String gender; // User's gender
     private String roleAtschool; // User's role at school
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
     /**
      * Get the user's first name.

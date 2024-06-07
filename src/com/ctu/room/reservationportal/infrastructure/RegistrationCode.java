@@ -5,7 +5,6 @@ import java.util.Scanner;
 
 public class RegistrationCode {
     private static final int CODE_LENGTH = 6;
-    private static int attempts = 3; // Number of attempts allowed
 
     /**
      * Generates a random 6-digit registration code
@@ -33,31 +32,48 @@ public class RegistrationCode {
     public static void displayRegistrationCode() {
         Scanner scanner = new Scanner(System.in);
 
-        String code = generateCode();
-        System.out.println("Registration Code :" + code);
-
         boolean codeMatched = false;
 
-        do {
+        while (!codeMatched) {
+            String code = generateCode();
+            printRegistrationCode(code);
+
             System.out.print("Enter Registration Code: ");
             String inputCode = scanner.nextLine();
 
             if (inputCode.equals(code)) {
                 codeMatched = true;
-                System.out.println("Registration code is valid.");
+                System.out.println("\n***************************************");
+                System.out.println("*                                     *");
+                System.out.println("*       Registration code matched!    *");
+                System.out.println("*    User Registration Successful!    *");
+                System.out.println("*                                     *");
+                System.out.println("***************************************\n");
             } else {
-                attempts--;
-                if (attempts == 0) {
-                    System.out.println("Maximum attempts reached. User registration failed.");
-                    return; // Exit the registration process
-                }
-
-                System.out.println("Registration code does not match. Please try again.");
-                System.out.println("You have " + attempts + " attempts remaining.");
+                System.out.println("\n---------------------------------------");
+                System.out.println("|  Registration code does not match.  |");
+                System.out.println("|  Please try again with the new code.|");
+                System.out.println("---------------------------------------\n");
             }
-        } while (!codeMatched);
+        }
+    }
 
-        System.out.println("User Registration Successful!");
+    /**
+     * Prints the registration code with a stylish design
+     *
+     * @param code The registration code to be printed
+     */
+    private static void printRegistrationCode(String code) {
+        String formattedCode = String.format("%-10s", code); // Ensures the code is centered
+        System.out.println("\n***************************************");
+        System.out.println("*                                     *");
+        System.out.println("*         REGISTRATION CODE           *");
+        System.out.println("*                                     *");
+        System.out.println("***************************************");
+        System.out.println("*                                     *");
+        System.out.println("*                " + formattedCode + "           *");
+        System.out.println("*                                     *");
+        System.out.println("***************************************\n");
     }
 
     public static void main(String[] args) {

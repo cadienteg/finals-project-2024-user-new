@@ -1,7 +1,7 @@
 package com.ctu.room.reservationportal.infrastructure;
 
 import com.ctu.room.reservationportal.model.UserInfo;
-
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 /**
@@ -26,86 +26,98 @@ public class UserInfoEditor {
             printEditOptions();
 
             System.out.print("Enter your choice (0 to exit editing): ");
-            int choice = scanner.nextInt();
-            scanner.nextLine(); // Consume newline
+            try {
+                int choice = scanner.nextInt();
+                scanner.nextLine(); // Consume newline
 
-            switch (choice) {
-                case 0:
-                    System.out.println("Exit editing.");
-                    RegistrationCode.displayRegistrationCode(); // Display registration code
-                    exitEditing = true;
-                    break;
-                case 1:
-                    editField("Username", this::editUserName);
-                    break;
-                case 2:
-                    editField("First Name", this::editFirstName);
-                    break;
-                case 3:
-                    editField("Middle Name", this::editMiddleName);
-                    break;
-                // Add cases for other fields
-                case 4:
-                    editField("Last Name", this::editLastName);
-                    break;
-                case 5:
-                    editField("Birthdate", this::editBirthdate);
-                    break;
-                case 6:
-                    editField("Email", this::editEmail);
-                    break;
-                case 7:
-                    editField("Phone Number", this::editPhoneNumber);
-                    break;
-                case 8:
-                    editField("Street", this::editStreet);
-                    break;
-                case 9:
-                    editField("Barangay", this::editBarangay);
-                    break;
-                case 10:
-                    editField("City", this::editCity);
-                    break;
-                case 11:
-                    editField("Municipality", this::editMunicipality);
-                    break;
-                case 12:
-                    editField("ZIP code", this::editZIPCode);
-                    break;
-                case 13:
-                    editField("Gender", this::editGender);
-                    break;
-                case 14:
-                    editField("Nationality", this::editNationality);
-                    break;
-                case 15:
-                    editField("Role at School", this::editRoleAtSchool);
-                    break;
-                default:
-                    System.out.println("Invalid choice.");
+                switch (choice) {
+                    case 0:
+                        System.out.println("Exit editing.");
+                        RegistrationCode.displayRegistrationCode(); // Display registration code
+                        exitEditing = true;
+                        break;
+                    case 1:
+                        editField("Username", this::editUserName);
+                        break;
+                    case 2:
+                        editField("Password", this::editPassword);
+                        break;
+                    case 3:
+                        editField("First Name", this::editFirstName);
+                        break;
+                    case 4:
+                        editField("Middle Name", this::editMiddleName);
+                        break;
+                    case 5:
+                        editField("Last Name", this::editLastName);
+                        break;
+                    case 6:
+                        editField("Birthdate", this::editBirthdate);
+                        break;
+                    case 7:
+                        editField("Email", this::editEmail);
+                        break;
+                    case 8:
+                        editField("Phone Number", this::editPhoneNumber);
+                        break;
+                    case 9:
+                        editField("Street", this::editStreet);
+                        break;
+                    case 10:
+                        editField("Barangay", this::editBarangay);
+                        break;
+                    case 11:
+                        editField("City", this::editCity);
+                        break;
+                    case 12:
+                        editField("Municipality", this::editMunicipality);
+                        break;
+                    case 13:
+                        editField("ZIP code", this::editZIPCode);
+                        break;
+                    case 14:
+                        editField("Gender", this::editGender);
+                        break;
+                    case 15:
+                        editField("Nationality", this::editNationality);
+                        break;
+                    case 16:
+                        editField("Role at School", this::editRoleAtSchool);
+                        break;
+                    default:
+                        System.out.println("Invalid choice.");
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid input. Please enter a valid number.");
+                scanner.nextLine(); // Clear the invalid input
             }
         } while (!exitEditing); // Continue editing until flag is set
     }
 
     // Method to print edit options
     private void printEditOptions() {
-        System.out.println("What information do you want to edit?");
-        System.out.println("1. Username");
-        System.out.println("2. First Name");
-        System.out.println("3. Middle Name");
-        System.out.println("4. Last Name");
-        System.out.println("5. Birthdate");
-        System.out.println("6. Email");
-        System.out.println("7. Phone Number");
-        System.out.println("8. Street");
-        System.out.println("9. Barangay");
-        System.out.println("10. City");
-        System.out.println("11. Municipality");
-        System.out.println("12. ZIP code");
-        System.out.println("13. Gender");
-        System.out.println("14. Nationality");
-        System.out.println("15. Role at School");
-        System.out.println("0. Exit Editing\n");
+        System.out.println("-------------------------------------------------------------");
+        System.out.println("|          Information to Edit         |         Option      |");
+        System.out.println("-------------------------------------------------------------");
+        System.out.println("| Username                             |           1         |");
+        System.out.println("| Password                             |           2         |");
+        System.out.println("| First Name                           |           3         |");
+        System.out.println("| Middle Name                          |           4         |");
+        System.out.println("| Last Name                            |           5         |");
+        System.out.println("| Birthdate                            |           6         |");
+        System.out.println("| Email                                |           7         |");
+        System.out.println("| Phone Number                         |           8         |");
+        System.out.println("| Street                               |           9         |");
+        System.out.println("| Barangay                             |          10         |");
+        System.out.println("| City                                 |          11         |");
+        System.out.println("| Municipality                         |          12         |");
+        System.out.println("| ZIP code                             |          13         |");
+        System.out.println("| Gender                               |          14         |");
+        System.out.println("| Nationality                          |          15         |");
+        System.out.println("| Role at School                       |          16         |");
+        System.out.println("| Exit Editing                         |           0         |");
+        System.out.println("-------------------------------------------------------------");
+        System.out.println("Enter the corresponding option number to edit the information.");
     }
 
     // Method to edit a field
@@ -118,13 +130,26 @@ public class UserInfoEditor {
         userInfo.displayUserInfo();
 
         // Ask if user wants to continue editing
-        System.out.print("Do you want to continue editing? (1 = Yes, 0 = No): ");
-        int choice = scanner.nextInt();
-        scanner.nextLine(); // Consume newline
-        if (choice == 0) {
-            System.out.println("Exit editing.");
-            RegistrationCode.displayRegistrationCode(); // Display registration code
-            exitEditing = true;
+        boolean validInput = false;
+        while (!validInput) {
+            try {
+                System.out.print("Do you want to continue editing? (1 = Yes, 0 = No): ");
+                int choice = scanner.nextInt();
+                scanner.nextLine(); // Consume newline
+                if (choice == 1 || choice == 0) {
+                    if (choice == 0) {
+                        System.out.println("Exit editing.");
+                        RegistrationCode.displayRegistrationCode(); // Display registration code
+                        exitEditing = true;
+                    }
+                    validInput = true;
+                } else {
+                    System.out.println("Invalid input. Please enter 1 or 0.");
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid input. Please enter 1 or 0.");
+                scanner.nextLine(); // Clear the invalid input
+            }
         }
     }
 
@@ -132,7 +157,9 @@ public class UserInfoEditor {
     private void editUserName() {
         userInfo.setUserName(validateInput("Username"));
     }
-
+    private void editPassword() {
+        userInfo.setPassword(validateInput("Password"));
+    }
     private void editFirstName() {
         userInfo.setFirstName(validateInput("First Name"));
     }
@@ -170,7 +197,18 @@ public class UserInfoEditor {
     }
 
     private void editZIPCode() {
-        userInfo.setZIPcode(Integer.parseInt(validateInput("ZIP code")));
+        while (true) {
+            try {
+                System.out.print("Enter new ZIP code: ");
+                int zipCode = scanner.nextInt();
+                scanner.nextLine(); // Consume newline
+                userInfo.setZIPcode(zipCode);
+                break;
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid input. Please enter a valid ZIP code.");
+                scanner.nextLine(); // Clear the invalid input
+            }
+        }
     }
 
     private void editGender() {
@@ -193,8 +231,6 @@ public class UserInfoEditor {
     private String validateInput(String fieldName) {
         String userInput;
         boolean isValid;
-
-
         do {
             System.out.print("Enter new " + fieldName + ": ");
             userInput = scanner.nextLine();

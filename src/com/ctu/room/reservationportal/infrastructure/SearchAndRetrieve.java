@@ -5,7 +5,10 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.InputMismatchException;
 import java.util.Scanner;
+
+import static java.sql.DriverManager.getConnection;
 
 /**
  * Class for searching and retrieving details from database
@@ -16,11 +19,12 @@ public class SearchAndRetrieve {
     /**
      * Database URL.
      */
-    private static final String URL = "jdbc:mysql://localhost:3306/roomportaldb";
-    // Username of the database
-    private static final String USERNAME = "root";
-    // Password for accessing the database
-    private static final String PASSWORD = "admin123$";
+    public static Connection getConnection() throws SQLException {
+        String url = "jdbc:mysql://localhost:3306/roomportaldb?useSSL=false&allowPublicKeyRetrieval=true";
+        String username = "root";
+        String password = "admin123$";
+        return DriverManager.getConnection(url, username, password);
+    }
 
     /**
      * Method for executing the search and retrieve
@@ -28,21 +32,37 @@ public class SearchAndRetrieve {
      * @param
      */
     public static void searchAndRetrieve() {
-        try (Scanner scanner = new Scanner(System.in);
-             Connection connection = DriverManager.getConnection(URL, USERNAME, PASSWORD)) {
-            // Declares an integer variable named choice without assigning it a value yet.
-            int choice;
+        try {
+            // Create a Scanner object for user input
+            Scanner scanner = new Scanner(System.in);
+            Connection connection = getConnection();
+            int choice = 0; // Initialize choice outside the do-while loop
+
             do {
                 // A menu for you to choose of what type of details you will use to search
-                System.out.println("Choose search criteria:");
-                System.out.println("1. Search by username");
-                System.out.println("2. Search by first name, middle name, last name, or ID number");
-                System.out.println("3. Search by other details");
-                System.out.println("4. Exit");
+                System.out.println("+--------------------------------------------+");
+                System.out.println("|        Choose search criteria:             |");
+                System.out.println("+--------------------------------------------+");
+                System.out.println("|  Option  |           Criteria              |");
+                System.out.println("+--------------------------------------------+");
+                System.out.println("|    1     |     Search by username          |");
+                System.out.println("|    2     |     Search by first name,       |");
+                System.out.println("|          |     middle name, last name,     |");
+                System.out.println("|          |     or ID number                |");
+                System.out.println("|    3     |     Search by other details     |");
+                System.out.println("+--------------------------------------------+");
                 System.out.print("Enter your choice: ");
-                //Reads an integer input from the user and assigns it to the variable choice.
-                choice = scanner.nextInt();
-                scanner.nextLine(); // Consume newline
+                try {
+                    // Reads an integer input from the user and assigns it to the variable choice.
+                    choice = scanner.nextInt();
+                    scanner.nextLine(); // Consume newline
+                } catch (InputMismatchException e) {
+                    // Handle the InputMismatchException
+                    System.out.println("Invalid input. Please enter a number.");
+                    scanner.nextLine(); // Consume the invalid input
+                    continue; // Skip the rest of the loop iteration
+                }
+
                 //Starts switch statement, evaluates the value of the variable choice to determine which case to execute.
                 switch (choice) {
                     /*
@@ -70,6 +90,8 @@ public class SearchAndRetrieve {
             e.printStackTrace();
         }
     }
+
+
 
     /**
      * A method for searching using username only
@@ -105,11 +127,14 @@ public class SearchAndRetrieve {
      * @throws SQLException
      */
     private static void filteredSearch(Connection connection, Scanner scanner) throws SQLException {
-        System.out.println("Choose field to search:");
-        System.out.println("1. First Name");
-        System.out.println("2. Middle Name");
-        System.out.println("3. Last Name");
-        System.out.println("4. ID Number");
+        System.out.println("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓");
+        System.out.println("┃           Choose field to search       ┃");
+        System.out.println("┣━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┫");
+        System.out.println("┃ 1. First Name                          ┃");
+        System.out.println("┃ 2. Middle Name                         ┃");
+        System.out.println("┃ 3. Last Name                           ┃");
+        System.out.println("┃ 4. ID Number                           ┃");
+        System.out.println("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛");
         System.out.print("Enter your choice: ");
         int choice = scanner.nextInt();
         scanner.nextLine(); // Consume newline
@@ -158,18 +183,23 @@ public class SearchAndRetrieve {
      */
 
     private static void editProfileSearch(Connection connection, Scanner scanner) throws SQLException {
-        System.out.println("Choose search query:");
-        System.out.println("1. Search by birthdate");
-        System.out.println("2. Search by email");
-        System.out.println("3. Search by phone number");
-        System.out.println("4. Search by street");
-        System.out.println("5. Search by barangay");
-        System.out.println("6. Search by municipality");
-        System.out.println("7. Search by city");
-        System.out.println("8. Search by nationality");
-        System.out.println("9. Search by gender");
-        System.out.println("10. Search by role at school");
+        System.out.println("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓");
+        System.out.println("┃                Choose search query          ┃");
+        System.out.println("┣━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┫");
+        System.out.println("┃ 1. Search by birthdate                      ┃");
+        System.out.println("┃ 2. Search by email                          ┃");
+        System.out.println("┃ 3. Search by phone number                   ┃");
+        System.out.println("┃ 4. Search by street                         ┃");
+        System.out.println("┃ 5. Search by barangay                       ┃");
+        System.out.println("┃ 6. Search by municipality                   ┃");
+        System.out.println("┃ 7. Search by city                           ┃");
+        System.out.println("┃ 8. Search by nationality                    ┃");
+        System.out.println("┃ 9. Search by gender                         ┃");
+        System.out.println("┃ 10. Search by role at school                ┃");
+        System.out.println("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛");
         System.out.print("Enter your choice: ");
+
+
         int choice = scanner.nextInt();
         scanner.nextLine(); // Consume newline
 
@@ -213,6 +243,32 @@ public class SearchAndRetrieve {
         System.out.println("Enter search term:");
         String searchTerm = scanner.nextLine().trim();
 
+        if (column.equals("phoneNumber") && searchTerm.startsWith("09")) {
+            searchTerm = "+63" + searchTerm.substring(1);
+        }
+
+        if (column.equals("gender")) {
+            switch (searchTerm.toLowerCase()) {
+                case "f":
+                case "female":
+                    searchTerm = "female";
+                    break;
+                case "m":
+                case "male":
+                    searchTerm = "male";
+                    break;
+                case "n":
+                case "not to say":
+                    searchTerm = "not to say";
+                    break;
+                default:
+                    System.out.println("Invalid gender search term.");
+                    return;
+            }
+        }
+
+
+
         String sql = "SELECT * FROM userinfo WHERE " + column + " = ?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, searchTerm);
@@ -255,7 +311,7 @@ public class SearchAndRetrieve {
                     resultSet.getString("roleAtschool"));
         } while (resultSet.next());
         System.out.printf("+--------------------------+------------------+------------------------------+-----------------------+---------------------+------------------+--------------------------------------------+---------------+--------------------------------------------------------------+-----------------+-----------------+-----------------+%n");
-    while (resultSet.next());
+        while (resultSet.next());
     }
 }
 

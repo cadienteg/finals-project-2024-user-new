@@ -4,6 +4,7 @@ import com.ctu.room.reservationportal.dbservices.InsertRecords;
 import com.ctu.room.reservationportal.model.UserInfo;
 
 import java.sql.SQLException;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 //import static com.ctu.room.reservationportal.infrastructure.CreateUserInfo.promptForInput;
@@ -48,6 +49,8 @@ public class CreateUserInfo {
      * UserInfo object for storing user registration information.
      */
    private UserInfo userRegistration;
+
+
     /**
      * Constructs a CreateUserInfo object and initializes the scanner for user input
      * and the userRegistration object for storing user information.
@@ -67,16 +70,28 @@ public class CreateUserInfo {
      * @return Validated user input
      */
     public UserInfo registerUser() {
-
-        int userChoice;
+        int userChoice = 0;
         do {
-            System.out.print("Are you just a user? (1 for Yes, 2 for No): ");
-            userChoice = Integer.parseInt(scanner.nextLine().trim());
-            if (userChoice != 1 && userChoice != 2) {
-                System.out.println("Invalid choice. Please enter 1 for Yes or 2 for No.");
+            try {
+                System.out.println("+---------------------------------+");
+                System.out.println("| Are you just a user?            |");
+                System.out.println("+---------------------------------+");
+                System.out.println("| 1. Yes                          |");
+                System.out.println("| 2. No                           |");
+                System.out.println("+---------------------------------+");
+                System.out.print("Enter your choice (1 or 2): ");
+                userChoice = scanner.nextInt();
+                scanner.nextLine(); // Consume newline
+
+                if (userChoice != 1 && userChoice != 2) {
+                    System.out.println("Invalid choice. Please enter 1 for Yes or 2 for No.");
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid input. Please enter a number.");
+                scanner.nextLine(); // Consume invalid input
             }
         } while (userChoice != 1 && userChoice != 2);
-
+        // Proceed only if the user chooses to register
         // If the user is just a user, proceed with the registration process
         if (userChoice == 1) {
             System.out.println("Proceeding to user registration process...");
@@ -87,9 +102,21 @@ public class CreateUserInfo {
         }
 
         // Print welcome message and instructions for user registration
-        System.out.println("\n              WELCOME TO USER REGISTRATION!");
-        System.out.println("Each field has specific guidelines.To ensure a smooth process.\n" +
-                "Please review the information and enter details that match those guidelines\n");
+        System.out.println("**********************************************************************");
+        System.out.println("*                     WELCOME TO USER REGISTRATION!                  *");
+        System.out.println("**********************************************************************");
+        System.out.println("* Each field has specific guidelines. To ensure a smooth process:    *");
+        System.out.println("* - Review the information and enter details that match guidelines.  *");
+        System.out.println("* - Names and Address (Except Street and Barangay) should contain    *");
+        System.out.println("*    letters only, with both uppercase and lowercase accepted.       *");
+        System.out.println("* - Phone Number, ZIP Code, Birthdate, and Gender must be entered    *");
+        System.out.println("*     correctly in the specified format.                             *");
+        System.out.println("* - Phone Number should start with '+639' or '09' followed by 9      *");
+        System.out.println("*     digits.                                                        *");
+        System.out.println("* - ZIP Code should contain four digits.                             *");
+        System.out.println("* - Birthdate should be entered in the format 'YYYY-MM-DD'.          *");
+        System.out.println("**********************************************************************");
+
 
 
         // Prompt for and validate user details
@@ -98,8 +125,9 @@ public class CreateUserInfo {
         // Prompt for username and validate
         String username = promptForInput(scanner, "Enter Username: ", Validators::isValidUsername);
         userRegistration.setUserName(username);
-        String password = promptForInput(scanner, "Enter Password: ", Validators::isValidPassword);
 
+        String password = promptForInput(scanner, "Enter Password: ", Validators::isValidPassword);
+        userRegistration.setPassword(password);
 
         int idNumber = IDGenerator.generateUserID();
         IDGenerator.displayID(idNumber);
@@ -153,104 +181,72 @@ public class CreateUserInfo {
         String gender = promptForInput(scanner, "Enter Gender (M-Male|F-Female|N-Not to say): ", Validators::isValidGender);
         userRegistration.setGender(gender);
 
-        // Create a new UserInfo object to store the collected information
-        UserInfo userInfo = new UserInfo();
-        userInfo.setUserName(username);
-        userInfo.setIdNumber(idNumber);
-        userInfo.setFirstName(firstName);
-        userInfo.setMiddleName(middleName);
-        userInfo.setLastName(lastName);
-        userInfo.setBirthDate(birthdate);
-        userInfo.setEmail(email);
-        userInfo.setPhoneNumber(phoneNumber);
-        userInfo.setStreet(street);
-        userInfo.setBarangay(barangay);
-        userInfo.setMunicipality(municipality);
-        userInfo.setCity(city);
-        userInfo.setZIPcode(zipcode);
-        userInfo.setNationality(nationality);
-        userInfo.setGender(gender);
 
-
-        // Instantiate the InsertRecords class
-//        InsertRecords insertRecords = new InsertRecords();
-
-        // Call the insertUserRecord method of InsertRecords and pass the UserInfo object
-//          insertRecords.insertUserRecord(userInfo);
-
-        // Display the details provided by the user during the registration process.
-        System.out.println("\nDETAILS PROVIDED");
-        System.out.println("\nUSER DETAILS");
-        System.out.println("Username:" + userRegistration.getUserName());
-        System.out.println("User ID Number:" + userRegistration.getIdNumber());
-        System.out.println("First name: " + userRegistration.getFirstName());
-        System.out.println("Middle name: " + userRegistration.getMiddleName());
-        System.out.println("Last name: " + userRegistration.getLastName());
-        System.out.println("Birthdate: " + userRegistration.getBirthdate());
-        System.out.println("Email: " + userRegistration.getEmail());
-        System.out.println("Phone Number: " + userRegistration.getPhoneNumber());
-        System.out.println("\nHOME ADDRESS DETAILS");
-        System.out.println("Street: " + userRegistration.getStreet());
-        System.out.println("Barangay: " + userRegistration.getBarangay());
-        System.out.println("Municipality: " + userRegistration.getMunicipality());
-        System.out.println("City: " + userRegistration.getCity());
-        System.out.println("ZIP Code: " + userRegistration.getZIPcode());
-        System.out.println("\nUSER OTHER DETAILS");
-        System.out.println("Nationality: " + userRegistration.getNationality());
-        System.out.println("Gender: " + userRegistration.getGender());
         // Validation of role at school
         // Check the role at school and validate it
         int roleChoice;
+        boolean validRoleChoice = false;
         do {
-            System.out.print("\nEnter role at school (1 for Teacher, 2 for Student, 3 for Staff): ");
-            roleChoice = Integer.parseInt(scanner.nextLine());
-            switch (roleChoice) {
-                case 1:
-                    userRegistration.setRoleAtschool("Teacher");
-                    break;
-                case 2:
-                    userRegistration.setRoleAtschool("Student");
-                    break;
-                case 3:
-                    userRegistration.setRoleAtschool("Staff");
-                    break;
-                default:
-                    System.out.println("Invalid choice. Please enter 1 for Teacher, 2 for Student, or 3 for Staff.");
+            try {
+                System.out.print("\nEnter role at school (1 for Teacher, 2 for Student, 3 for Staff): ");
+                roleChoice = Integer.parseInt(scanner.nextLine());
+                switch (roleChoice) {
+                    case 1:
+                        userRegistration.setRoleAtschool("Teacher");
+                        validRoleChoice = true;
+                        break;
+                    case 2:
+                        userRegistration.setRoleAtschool("Student");
+                        validRoleChoice = true;
+                        break;
+                    case 3:
+                        userRegistration.setRoleAtschool("Staff");
+                        validRoleChoice = true;
+                        break;
+                    default:
+                        System.out.println("Invalid choice. Please enter 1 for Teacher, 2 for Student, or 3 for Staff.");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a number.");
             }
-        } while (roleChoice < 1 || roleChoice > 3);
+        } while (!validRoleChoice);
+
+
+
+        // Call Check user detail
+        CheckDetails.checkDetails(userRegistration);
+
+        // End the program after all actions are completed
+        System.out.println("You have successfully registered.");
 
         // Instantiate the InsertRecords class
         InsertRecords insertRecords = new InsertRecords();
 
-        // Call the insertUserRecord method of InsertRecords and pass the UserInfo object
+        // Call the insertUserRecord method of InsertRecords and pass the adminRegistration object
         insertRecords.insertUserRecord(userRegistration);
 
-        // Check if the user is a teacher
-        if (userRegistration.getRoleAtschool().equalsIgnoreCase("Teacher")) {
-            System.out.println("\nWelcome to Teaching Details.");
-            TeachingDetails teachingDetails = new TeachingDetails();
-            teachingDetails.collectTeachingDetails(scanner);
-        } else {
-            // Call Check user detail
-            CheckDetails.checkDetails(userRegistration);
-            // End the program after all actions are completed
-            System.out.println("You have successfully registered.");
-        }
-        boolean validChoice = false;
-        while (!validChoice) {
-            System.out.print("Do you want to register another user (1 for Yes, 2 for No)? ");
-            int choice = Integer.parseInt(scanner.nextLine().trim());
-            if (choice == 1) {
-                validChoice = true;
-                registerUser(); // Re-register
-            } else if (choice == 2) {
-                validChoice = true;
-                System.out.println("Exiting the registration process. Goodbye!");
-                System.exit(0); // Exit the program
-            } else {
-                System.out.println("Invalid choice. Please enter 1 for Yes or 2 for No.");
+        // Ask if the user wants to register another user
+        boolean isValidChoice = false;
+        while (!isValidChoice) {
+            System.out.print("Do you want to register another  user account (1 for Yes, 2 for No)? ");
+            try {
+                int choice = Integer.parseInt(scanner.nextLine().trim());
+                if (choice == 1) {
+                    isValidChoice = true;
+                    registerUser(); // Re-register
+                } else if (choice == 2) {
+                    isValidChoice = true;
+                    System.out.println("Exiting the registration process.");
+                    scanner.close(); // Close the scanner
+                    System.exit(0); // Exit the program
+                } else {
+                    System.out.println("Invalid choice. Please enter 1 for Yes or 2 for No.");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a valid integer (1 for Yes, 2 for No).");
             }
         }
+
 
         return this.userRegistration;
     }

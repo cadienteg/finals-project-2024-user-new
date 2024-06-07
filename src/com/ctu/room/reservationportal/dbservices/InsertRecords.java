@@ -7,8 +7,8 @@ import java.sql.*;
 public class InsertRecords {
 
     private static final String INSERT_USERS_SQL = "INSERT INTO userinfo (" +
-            "  userName, idNumber, firstName, middleName, lastName, birthDate, email, phoneNumber, street, barangay, municipality, city, zipcode, nationality, gender, roleAtschool) " +
-            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            "  userName, password, idNumber, firstName, middleName, lastName, birthDate, email, phoneNumber, street, barangay, municipality, city, zipcode, nationality, gender, roleAtschool) " +
+            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 
     private final String jdbcURL;
@@ -31,21 +31,22 @@ public class InsertRecords {
              PreparedStatement preparedStatement = connection.prepareStatement(INSERT_USERS_SQL)) {
 
             preparedStatement.setString(1, userInfo.getUserName());
-            preparedStatement.setInt(2, userInfo.getIdNumber());
-            preparedStatement.setString(3, capitalizeFirstLetter(userInfo.getFirstName()));
-            preparedStatement.setString(4, capitalizeFirstLetter(userInfo.getMiddleName()));
-            preparedStatement.setString(5, capitalizeFirstLetter(userInfo.getLastName()));
-            preparedStatement.setString(6, userInfo.getBirthdate());
-            preparedStatement.setString(7, userInfo.getEmail().toLowerCase());
-            preparedStatement.setString(8, formatPhoneNumber(userInfo.getPhoneNumber()));
-            preparedStatement.setString(9, capitalizeFirstLetter(userInfo.getStreet()));
-            preparedStatement.setString(10, capitalizeFirstLetter(userInfo.getBarangay()));
-            preparedStatement.setString(11, capitalizeFirstLetter(userInfo.getMunicipality()));
-            preparedStatement.setString(12, capitalizeFirstLetter(userInfo.getCity()));
-            preparedStatement.setInt(13, userInfo.getZIPcode());
-            preparedStatement.setString(14, capitalizeFirstLetter(userInfo.getNationality()));
-            preparedStatement.setString(15, formatGender(userInfo.getGender()));
-            preparedStatement.setString(16, userInfo.getRoleAtschool());
+            preparedStatement.setString(2, userInfo.getPassword());
+            preparedStatement.setInt(3, userInfo.getIdNumber());
+            preparedStatement.setString(4, capitalizeFirstLetter(userInfo.getFirstName()));
+            preparedStatement.setString(5, capitalizeFirstLetter(userInfo.getMiddleName()));
+            preparedStatement.setString(6, capitalizeFirstLetter(userInfo.getLastName()));
+            preparedStatement.setString(7, userInfo.getBirthdate());
+            preparedStatement.setString(8, userInfo.getEmail().toLowerCase());
+            preparedStatement.setString(9, formatPhoneNumber(userInfo.getPhoneNumber()));
+            preparedStatement.setString(10, capitalizeFirstLetter(userInfo.getStreet()));
+            preparedStatement.setString(11, capitalizeFirstLetter(userInfo.getBarangay()));
+            preparedStatement.setString(12, capitalizeFirstLetter(userInfo.getMunicipality()));
+            preparedStatement.setString(13, capitalizeFirstLetter(userInfo.getCity()));
+            preparedStatement.setInt(14, userInfo.getZIPcode());
+            preparedStatement.setString(15, capitalizeFirstLetter(userInfo.getNationality()));
+            preparedStatement.setString(16, formatGender(userInfo.getGender()));
+            preparedStatement.setString(17, userInfo.getRoleAtschool());
 
 
             int rowsInserted = preparedStatement.executeUpdate();
@@ -123,6 +124,7 @@ public class InsertRecords {
         UserInfo userInfo = new UserInfo();
 
         userInfo.setUserName(userInfo.getUserName());
+        userInfo.setPassword(userInfo.getPassword());
         userInfo.setIdNumber((userInfo.getIdNumber()));
         userInfo.setFirstName(userInfo.getFirstName());
         userInfo.setMiddleName(userInfo.getMiddleName());

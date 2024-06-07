@@ -13,22 +13,23 @@ import java.sql.Statement;
 public class CreateTables {
 
     private static final String createUserInfoTbl =  "CREATE TABLE userInfo (\n" +
-            "    firstName VARCHAR(255),\n" +
-            "    middleName VARCHAR(255),\n" +
-            "    lastName VARCHAR(255),\n" +
-            "    birthDate DATE,\n" +
-            "email VARCHAR(255),\n " +
-            "PhoneNumber ARCHAR(255),\n " +
-            "    street VARCHAR(255),\n" +
-            "    barangay VARCHAR(255),\n" +
-            "    municipality VARCHAR(255),\n" +
-            "    city VARCHAR(255),\n" +
-            "    zipCode INT,\n" +
-            "    nationality VARCHAR(255),\n" +
-            "    gender VARCHAR(255),\n" +
-            "    roleAtSchool VARCHAR(255)\n" +
-            "userName VARCHAR(255)\n" +
-            "idNumber INT \n " +
+            "username VARCHAR(255)," +
+            "password VARCHAR(255)," +
+            "idNumber int," +
+            "firstName VARCHAR(255)," +
+            "middleName VARCHAR(255)," +
+            "lastName VARCHAR(255)," +
+            "birthDate DATE," +
+            "email VARCHAR(255)," +
+            "phoneNumber VARCHAR(255)," +
+            "street VARCHAR(255)," +
+            "barangay VARCHAR(255)," +
+            "municipality VARCHAR(255)," +
+            "city VARCHAR(255)," +
+            "ZIPcode int," +
+            "nationality VARCHAR(255)," +
+            "gender ENUM('Male', 'Female', 'Not to say')," +
+            "roleAtSchool VARCHAR(255)" +
             ");";
 
     private static final String createRoomRecordTbl = "CREATE TABLE RoomRecord (\n" +
